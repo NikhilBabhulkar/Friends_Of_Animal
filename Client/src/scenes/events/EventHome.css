@@ -1,0 +1,84 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .heading-div {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .events-div {/* Add these styles to your EventHome.css file */
+
+    .custom-dialog-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .custom-ok-button {
+      background-color: #4caf50; /* Green */
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 20px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+    
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .event {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .event-image {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .event-image img {
+    max-width: 100%;
+    height: auto;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+  }
+  
+  .event-content {
+    text-align: center;
+    padding: 2rem;
+  }
+
+  /* Add these styles to your EventHome.css file */
+
+/* Add these styles to your EventHome.css file */
+
+.custom-dialog-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  text-align: center; /* Center text */
+}
+
+.custom-ok-button {
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+  
+  /* Add any additional styling as needed */
+  
