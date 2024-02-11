@@ -1,7 +1,7 @@
 import { Typography, useTheme } from "@mui/material";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 
@@ -10,7 +10,10 @@ const AdvertWidget = ({ event }) => {
   const dark = palette.neutral.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
-  
+  const navigate = useNavigate()
+  const handleClick = () => {
+    navigate("/events");
+  };
   // Ensure that the event is not null before accessing its properties
   if (!event) {
     // Display a toast notification if the event is null
@@ -26,14 +29,15 @@ const AdvertWidget = ({ event }) => {
         </Typography>
         <Typography color={medium}>Participate</Typography>
       </FlexBetween>
-      <a href="/events" >
+      <div onClick={handleClick}>
         <img
           width="100%"
           height="auto"
           alt="advert"
           src={`${process.env.REACT_APP_LOCAL}/assets${event.eventPosterUrl}`}
           style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
-        /> </a>
+        /> 
+        </div>
       <FlexBetween>
         <Typography color={main}>
           {event.eventName}
