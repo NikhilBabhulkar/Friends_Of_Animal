@@ -16,6 +16,8 @@ import { setLogin } from "state";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const registerSchema = yup.object().shape({
   firstName: yup.string().required("required"),
@@ -40,7 +42,6 @@ const initialValuesRegister = {
   location: "",
   occupation: "",
   picture: "",
-  role: ""
 };
 
 const initialValuesLogin = {
@@ -55,71 +56,68 @@ const Form = () => {
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const isLogin = pageType === "login";
-  const isRegister = pageType === "register";
+  const isRegister = pageType === "register"; // Define isRegister here
 
   const register = async (values, onSubmitProps) => {
-    // this allows us to send form info with image
-    const formData = new FormData();
-    for (let value in values) {
-      formData.append(value, values[value]);
-    }
-
-    formData.append("picturePath", "profilepics/" + values.picture.name);
-
-    const savedUserResponse = await fetch(
-      `${process.env.REACT_APP_LOCAL}/auth/register`,
-      {
-        method: "POST",
-        body: formData,
+    try {
+      const formData = new FormData();
+      for (let value in values) {
+        formData.append(value, values[value]);
       }
-    );
-    if (!savedUserResponse.ok) {
-      alert("Server Side error");
-      onSubmitProps.resetForm();
-    }
-    else {
-      const savedUser = await savedUserResponse.json();
-      onSubmitProps.resetForm();
+      formData.append("picturePath", "profilepics/" + values.picture.name);
 
-      if (savedUser) {
-        setPageType("login");
+      const savedUserResponse = await fetch(
+        `${process.env.REACT_APP_LOCAL}/auth/register`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      if (!savedUserResponse.ok) {
+        throw new Error("Server Side error");
       } else {
-        alert("Server Error")
+        const savedUser = await savedUserResponse.json();
+        onSubmitProps.resetForm();
+        if (savedUser) {
+          setPageType("login");
+          toast.success("Registration successful! Please log in.");
+        } else {
+          throw new Error("Server Error");
+        }
       }
+    } catch (error) {
+      console.error("Registration error:", error);
+      toast.error("Failed to register. Please try again later.");
+      onSubmitProps.resetForm();
     }
   };
 
   const login = async (values, onSubmitProps) => {
-
     try {
-      const loggedInResponse = await fetch(`${process.env.REACT_APP_LOCAL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
+      const loggedInResponse = await fetch(
+        `${process.env.REACT_APP_LOCAL}/auth/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        }
+      );
       if (!loggedInResponse.ok) {
-        // Check if the response status is 400 (Bad Request)
         if (loggedInResponse.status === 400) {
-          alert("Invalid credentials");
-          onSubmitProps.resetForm();
+          throw new Error("Invalid credentials");
         } else {
-          // Handle other server-side errors
           const errorData = await loggedInResponse.json();
-          console.error("Server side error:", errorData);
-          alert("Server side error");
-          onSubmitProps.resetForm();
+          throw new Error(`Server error: ${errorData.message}`);
         }
       } else {
-        // Process the successful response here
         const loggedIn = await loggedInResponse.json();
         onSubmitProps.resetForm();
         if (loggedIn) {
-          console.log("here");
           dispatch(
             setLogin({
               user: loggedIn.user,
               token: loggedIn.token,
-              role: loggedIn.user.role
+              role: loggedIn.user.role,
             })
           );
           Cookies.set("userData", JSON.stringify({
@@ -127,22 +125,22 @@ const Form = () => {
             token: loggedIn.token,
           }));
           navigate("/home");
+          toast.success("Login successful!"); // Display success message
         }
       }
-
-
-    } catch (err) {
-      // Handle network errors or other exceptions
-      console.error("Network error:", err);
-      alert("Network error");
+    } catch (error) {
+      console.error("Login error:", error.message);
+      toast.error("Failed to log in. Please check your credentials.");
       onSubmitProps.resetForm();
     }
-  }
+  };
+  
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) await login(values, onSubmitProps);
-    if (isRegister) await register(values, onSubmitProps);
+    else await register(values, onSubmitProps);
   };
+
 
   return (
     <Formik

@@ -9,6 +9,10 @@ import AdvertWidget from "scenes/widgets/AdvertWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
 import { useEffect } from "react";
 import { setEvent } from "state";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
   const { _id, picturePath } = useSelector((state) => state.user);
@@ -19,18 +23,20 @@ const HomePage = () => {
   useEffect(() => {
     const getLatestEvent = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_LOCAL}/events/latestevent`,
-          { headers: 
-            { Authorization: `Bearer ${token}` } });
-            dispatch(setEvent({ event: response.data }));
-        // console.log(event);
-        // console.log(response.data);
+        const response = await axios.get(`${process.env.REACT_APP_LOCAL}/events/latestevent`, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        dispatch(setEvent({ event: response.data }));
       } catch (error) {
-        console.log(error);
+        console.error('An error occurred while fetching the latest event:', error);
+        toast.error('An error occurred. Please try again later.');
       }
-    }
+    };
     getLatestEvent();
-  }, [])
+  }, []);
+  
 
   return (
     <Box>

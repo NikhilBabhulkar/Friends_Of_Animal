@@ -45,7 +45,7 @@ const Navbar = () => {
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
       <FlexBetween gap="1.75rem">
         {/* Logo */}
-        <img src="http://localhost:3001/assets/foalogo.png" alt="Logo" style={{ height: "40px", marginRight: "1rem" }} />
+        <img src={`${process.env.REACT_APP_LOCAL}/assets/foalogo.png`} alt="Logo" style={{ height: "40px", marginRight: "1rem" }} />
         <Typography
           fontWeight="bold"
           fontSize="clamp(1rem, 2rem, 2.25rem)"

@@ -5,6 +5,8 @@ import Navbar from 'scenes/navbar';
 import Lottie from 'lottie-react'; // Import Lottie component
 import { useSelector, useDispatch } from 'react-redux'
 import animationData from '../../lotties/Success.json';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 //import { setEvents } from "state";
 import axios from 'axios';
 
@@ -26,7 +28,7 @@ function EventHome() {
         { userId: user._id },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
+  
       if (response.status === 201) {
         setUserHook(response.data);
         setOpenModal(true);
@@ -38,12 +40,14 @@ function EventHome() {
         );
         setEvents(updatedEvents);
       } else {
-        alert('Something went wrong. Please try again later.');
+        toast.error('Something went wrong. Please try again later.');
       }
     } catch (error) {
-      alert('An error occurred. Please try again later.');
+      console.error('An error occurred while participating:', error);
+      toast.error('An error occurred. Please try again later.');
     }
   };
+  
 
 
   const handleCloseModal = () => {

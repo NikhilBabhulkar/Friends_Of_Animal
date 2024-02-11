@@ -1,17 +1,22 @@
 import { Typography, useTheme } from "@mui/material";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 
-
-const AdvertWidget = (event) => {
+const AdvertWidget = ({ event }) => {
   const { palette } = useTheme();
   const dark = palette.neutral.dark;
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
-  //const [event, setEvent] = useState();
-  //console.log(event);
-  event=event.event;
+  
+  // Ensure that the event is not null before accessing its properties
+  if (!event) {
+    // Display a toast notification if the event is null
+    toast.error('Error: Event data is missing');
+    return null;
+  }
 
   return (
     <WidgetWrapper>

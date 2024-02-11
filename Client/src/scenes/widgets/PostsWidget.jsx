@@ -2,38 +2,49 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import PostWidget from "./PostWidget";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const PostsWidget = ({ userId, isProfile}) => {
+const PostsWidget = ({ userId, isProfile }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
   const token = useSelector((state) => state.token);
-  //console.log(posts);
 
   const getPosts = async () => {
-    
     try {
       const response = await fetch(`${process.env.REACT_APP_LOCAL}/posts`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });
+      if (!response.ok) {
+        throw new Error('Failed to fetch posts');
+      }
       const data = await response.json();
-      //console.log(data);
       dispatch(setPosts({ posts: data }));
-      //console.log(posts);
-    } catch (err) { console.log(err); }
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+      toast.error('Failed to fetch posts. Please try again later.');
+    }
   };
 
-
   const getUserPosts = async () => {
-    const response = await fetch(
-      `${process.env.REACT_APP_LOCAL}/posts/${userId}/posts`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_LOCAL}/posts/${userId}/posts`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!response.ok) {
+        throw new Error('Failed to fetch user posts');
       }
-    );
-    const data = await response.json();
-    dispatch(setPosts({ posts: data }));
+      const data = await response.json();
+      dispatch(setPosts({ posts: data }));
+    } catch (error) {
+      console.error('Error fetching user posts:', error);
+      toast.error('Failed to fetch user posts. Please try again later.');
+    }
   };
 
   useEffect(() => {

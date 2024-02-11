@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFriends } from "state";
 import FlexBetween from "./FlexBetween";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import UserImage from "./UserImage";
 import { fireEvent } from "@testing-library/react";
 
@@ -22,7 +24,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
    //console.log(friends);
   const isFriend = friends.find((friend) => friend._id === friendId) || false;
  //console.log(friends);
+
   const patchFriend = async () => {
+  try {
     const response = await fetch(
       `${process.env.REACT_APP_LOCAL}/users/${_id}/${friendId}`,
       {
@@ -36,7 +40,12 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
     const data = await response.json();
     console.log(data);
     dispatch(setFriends({ friends: data }));
-  };
+  } catch (error) {
+    console.error("Error patching friend:", error);
+    toast.error("Failed to update friend. Please try again later.");
+  }
+};
+
 
   return (
     <FlexBetween>
