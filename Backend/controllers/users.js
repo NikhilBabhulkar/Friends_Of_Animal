@@ -88,3 +88,28 @@ export const getUserParticipatedEvents = async(req, res) => {
   }
 
 }
+
+// Seraching the users
+
+export const searchUsers=async(req,res)=>{
+  try {
+    const { term } = req.params;
+    
+    // Perform case-insensitive search
+    const users = await User.find({
+      $or: [
+        { firstName: { $regex: term, $options: 'i' } },
+        { lastName: { $regex: term, $options: 'i' } },
+        { location: { $regex: term, $options: 'i' } },
+        { occupation: { $regex: term, $options: 'i' } }
+
+      ]
+    });
+    
+    // Otherwise, return all related users
+    return res.status(200).json(users);
+  } catch (error) {
+    console.error('Error searching users:', error);
+    return res.status(500).json({ message: 'Failed to search users' });
+  }
+}

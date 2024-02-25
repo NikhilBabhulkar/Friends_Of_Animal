@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Routes, Route } from "react-router-dom";
 import HomePage from "scenes/homePage";
 import LoginPage from "scenes/loginPage";
 import ProfilePage from "scenes/profilePage";
+import UserProfile from "scenes/profilePage/UserProfile"
 import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -29,6 +30,11 @@ function App() {
             <Route
               path="/profile/:userId"
               element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+            //  element={<ProfilePage/>}
+            />
+            <Route
+              path="/userprofile/:userId"
+              element={isAuth ? <UserProfile /> : <Navigate to="/" />}
             //  element={<ProfilePage/>}
             />
             <Route path="/events" element={<EventHome/>}/>

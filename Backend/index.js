@@ -20,6 +20,7 @@ import Post from "./models/Post.js";
 import { users, posts } from "./data/index.js";
 import { checkRole } from "./middleware/CheckRole.js";
 import { createEvent } from "./controllers/events.js";
+import session  from "express-session"
 
 /* CONFIGURATIONS */
 const __filename = fileURLToPath(import.meta.url);
@@ -34,6 +35,13 @@ app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
 app.use("/assets", express.static(path.join(__dirname, "public/assets")));
+
+app.use(session({
+  secret: "yMw0S9h5FzVmg64fKRdynaQDBvJEJgoj6PhWrTnDcS6UY0NzFNEpNaFHGSxeyCrFv7hAB6iZ/zZkSaR+IKAc3+Dr7TfCHtuC+SbHtD0pj18+", // Replace with your own secret key
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
 /* FILE STORAGE */
 const profilePicsStorage = multer.diskStorage({
@@ -73,25 +81,25 @@ const uploadEventPoster = multer({ storage: eventPosterStorage });
 app.post("/auth/register", uploadProfilePics.single("picture"), register);
 app.post("/posts", verifyToken, uploadPosts.single("picture"), createPost);
 // admin route
-app.post("/events/create-event",uploadEventPoster.single("picture"),createEvent);
+app.post("/events/create-event", uploadEventPoster.single("picture"), createEvent);
 
 /* ROUTES */
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
 app.use("/posts", postRoutes);
-app.use("/events",eventRoutes)
+app.use("/events", eventRoutes)
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 3001;
 mongoose
   .connect(process.env.MONGO_DB_URL, {
-     useNewUrlParser: true,
-     useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   })
   .then(() => {
     app.listen(PORT, () => console.log(`Server Port: ${PORT}`, "And Database Connected"));
 
-    
+
     /* ADD DATA ONE TIME */
     // User.insertMany(users);
     // Post.insertMany(posts);

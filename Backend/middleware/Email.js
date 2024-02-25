@@ -64,5 +64,42 @@ export const sendParticipationMail = (data) => {
     })
 };
 
+export const sendVerificationEmail = (name,email, otp) => {
+  //console.log(email);
+  const message = {
+      from: process.env.EMAIL, // Sender's email address
+      to: email, // Recipient's email address
+      subject: 'Welcome to Friends of Animal: OTP Verification',
+      html: `<p> 
+
+      Dear ${name},<br>
+      
+      Thank you for registering with Friends of Animal. We're thrilled to have you join our community dedicated to the welfare of animals.<br>
+      
+      To ensure the security of your account, please use the following one-time password (OTP) for verification:<br>
+      
+      OTP: <b>${otp}</b><br><br>
+      
+      If you did not initiate this registration or require any assistance, please contact our support team immediately.<br><br>
+      
+      Warm regards,<br>
+      
+      Team Friends of Animal
+       </p>
+       `
+  };
+
+
+  transporter.sendMail(message, (err) => {
+      if (err) {
+          console.log("Error in sending the verification mail", err);
+      }
+      else {
+          console.log("Verification Mail has been Send");
+      }
+  })
+};
+
+
 
 
