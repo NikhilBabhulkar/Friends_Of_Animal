@@ -29,7 +29,7 @@ const AdvertWidget = ({ event }) => {
         </Typography>
         <Typography color={medium}>Participate</Typography>
       </FlexBetween>
-      <div onClick={handleClick}>
+      <div onClick={handleClick} style={{cursor:"pointer"}}>
         <img
           width="100%"
           height="auto"

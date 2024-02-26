@@ -12,7 +12,7 @@ const PostsWidget = ({ userId, isProfile }) => {
 
   const getPosts = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_LOCAL}/posts`, {
+      const response = await fetch(`${process.env.REACT_APP_LOCAL}/posts/`, {
         method: "GET",
         headers: { Authorization: `Bearer ${token}` },
       });

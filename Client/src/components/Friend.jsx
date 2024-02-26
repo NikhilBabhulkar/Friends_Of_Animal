@@ -7,7 +7,7 @@ import FlexBetween from "./FlexBetween";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import UserImage from "./UserImage";
-import { fireEvent } from "@testing-library/react";
+//import { fireEvent } from "@testing-library/react";
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
@@ -53,7 +53,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
         <UserImage image={userPicturePath} size="55px" />
         <Box
           onClick={() => {
-            navigate(`/profile/${friendId}`);
+            navigate(`/userprofile/${friendId}`);
             navigate(0);
           }}
         >

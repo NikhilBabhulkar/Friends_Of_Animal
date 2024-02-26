@@ -29,12 +29,17 @@ export const createPost = async (req, res) => {
 /* READ */
 export const getFeedPosts = async (req, res) => {
   try {
-    const post = await Post.find();
-    res.status(200).json(post);
+    // Find all posts and sort them by createdAt date in descending order
+    const posts = await Post.find().sort({ createdAt: -1 });
+
+    // Send the sorted posts in the response
+    console.log(posts);
+    res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
+
 
 export const getUserPosts = async (req, res) => {
   try {

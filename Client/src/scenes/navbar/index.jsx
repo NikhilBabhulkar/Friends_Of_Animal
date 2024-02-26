@@ -26,11 +26,12 @@ import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import SearchWidget from "scenes/widgets/SearchWidget";
 import axios from "axios";
-//import { toast } from "react-toastify";
+import HelpModal from "../widgets/HelpModal"; // Import the HelpModal component
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const [showSuggestion, setShowSuggestion] = useState(false);
+  const [isHelpModalOpen, setIsHelpModalOpen] = useState(false); // State for controlling the modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
@@ -45,19 +46,21 @@ const Navbar = () => {
 
   const fullName = `${user.firstName} ${user.lastName}`;
   const [searchTerm, setSearchTerm] = useState("");
-  const[Suggestions,setSuggestion]=useState([]);
+  const [Suggestions, setSuggestion] = useState([]);
   const token = useSelector((state) => state.token);
 
-  const handleSearchInputChange = async(event) => {
+  const handleSearchInputChange = async (event) => {
     const value = event.target.value;
     setSearchTerm(value);
     try {
-     const res =await axios.get(`http://localhost:3001/users/search/${searchTerm}`,{ headers: { Authorization: `Bearer ${token}` } })
-     setSuggestion(res.data);
+      const res = await axios.get(
+        `http://localhost:3001/users/search/${searchTerm}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSuggestion(res.data);
     } catch (error) {
-      //toast.error("Term not Found")
       console.log(error);
-      setSuggestion([])
+      setSuggestion([]);
     }
     setShowSuggestion(!!value);
   };
@@ -87,38 +90,37 @@ const Navbar = () => {
           >
             Friends of Animals
           </Typography>
-          {isNonMobileScreens && (
-            <Box position="relative">
-              <Box
-                backgroundColor="light"
-                borderRadius="9px"
-                padding="0.1rem 1.5rem"
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                mb={2}
-              >
-                <InputBase
-                  placeholder="Search..."
-                  onChange={handleSearchInputChange}
-                />
-                <IconButton>
-                  <Search />
-                </IconButton>
-              </Box>
-              {/* Display SearchWidget based on showSuggestion state */}
-              {showSuggestion && (
-                <Box
-                  position="absolute"
-                  top="calc(100% + 10px)" // Adjust the spacing as needed
-                  left="0"
-                  zIndex="999"
-                >
-                  <SearchWidget searchResults={Suggestions} />
-                </Box>
-              )}
+          {/* Always render search bar */}
+          <Box position="relative">
+            <Box
+              backgroundColor="light"
+              borderRadius="9px"
+              padding="0.1rem 1.5rem"
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              mb={2}
+            >
+              <InputBase
+                placeholder="Search..."
+                onChange={handleSearchInputChange}
+              />
+              <IconButton>
+                <Search />
+              </IconButton>
             </Box>
-          )}
+            {/* Conditionally render suggestions */}
+            {showSuggestion && (
+              <Box
+                position="absolute"
+                top="calc(100% + 10px)" // Adjust the spacing as needed
+                left="0"
+                zIndex="999"
+              >
+                <SearchWidget searchResults={Suggestions} />
+              </Box>
+            )}
+          </Box>
         </FlexBetween>
         {/* DESKTOP NAV */}
         {isNonMobileScreens ? (
@@ -132,7 +134,10 @@ const Navbar = () => {
             </IconButton>
             <Message sx={{ fontSize: "25px" }} />
             <Notifications sx={{ fontSize: "25px" }} />
-            <Help sx={{ fontSize: "25px" }} />
+            <Help
+              sx={{ fontSize: "25px",cursor:"pointer" }}
+              onClick={() => setIsHelpModalOpen(true)} // Open the help modal
+            />
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}
@@ -204,6 +209,25 @@ const Navbar = () => {
               alignItems="center"
               gap="3rem"
             >
+              {/* Move search bar to mobile menu */}
+              <Box
+                backgroundColor="light"
+                borderRadius="9px"
+                padding="0.1rem 1.5rem"
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                mb={2}
+              >
+                <InputBase
+                  placeholder="Search..."
+                  onChange={handleSearchInputChange}
+                />
+                <IconButton>
+                  <Search />
+                </IconButton>
+              </Box>
+
               <IconButton
                 onClick={() => dispatch(setMode())}
                 sx={{ fontSize: "25px" }}
@@ -216,7 +240,10 @@ const Navbar = () => {
               </IconButton>
               <Message sx={{ fontSize: "25px" }} />
               <Notifications sx={{ fontSize: "25px" }} />
-              <Help sx={{ fontSize: "25px" }} />
+              <Help
+                sx={{ fontSize: "25px",cursor:"pointer" }}
+                onClick={() => setIsHelpModalOpen(true)} // Open the help modal
+              />
               <FormControl variant="standard" value={fullName}>
                 <Select
                   value={fullName}
@@ -255,6 +282,12 @@ const Navbar = () => {
           </Box>
         )}
       </FlexBetween>
+
+      {/* Render the HelpModal component */}
+      <HelpModal
+        open={isHelpModalOpen}
+        onClose={() => setIsHelpModalOpen(false)} // Close the help modal
+      />
     </>
   );
 };
