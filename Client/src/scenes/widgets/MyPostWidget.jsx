@@ -1,3 +1,5 @@
+// Assuming you're using uploadPosts.single("picture") on the backend
+
 import {
   EditOutlined,
   DeleteOutlined,
@@ -6,6 +8,7 @@ import {
   ImageOutlined,
   MicOutlined,
   MoreHorizOutlined,
+  VideocamOutlined, // Import the icon for video
 } from "@mui/icons-material";
 import {
   Box,
@@ -30,10 +33,11 @@ import 'react-toastify/dist/ReactToastify.css';
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
-  const [image, setImage] = useState(null);
+  const [isClick, setIsClick] = useState(false);
+  const [file, setFile] = useState(null); // State for file (image or video)
   const [post, setPost] = useState("");
   const { palette } = useTheme();
-  const { _id } = useSelector((state) => state.user);
+  const { _id, email } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
@@ -43,9 +47,11 @@ const MyPostWidget = ({ picturePath }) => {
     const formData = new FormData();
     formData.append("userId", _id);
     formData.append("description", post);
-    if (image) {
-      formData.append("picture", image);
-      formData.append("picturePath", image.name);
+
+    if (file) {
+      const newFilename = `${email}_${Date.now()}_${file.name}`;
+      formData.append("picture", file, newFilename);
+      formData.append("picturePath", newFilename); // Ensure that the field name matches backend
     }
 
     try {
@@ -59,7 +65,7 @@ const MyPostWidget = ({ picturePath }) => {
       }
       const posts = await response.json();
       dispatch(setPosts({ posts }));
-      setImage(null);
+      setFile(null);
       setPost("");
       toast.success('Post successful');
     } catch (error) {
@@ -84,7 +90,8 @@ const MyPostWidget = ({ picturePath }) => {
           }}
         />
       </FlexBetween>
-      {isImage && (
+
+      {(isClick || file) && (
         <Box
           border={`1px solid ${medium}`}
           borderRadius="5px"
@@ -92,32 +99,40 @@ const MyPostWidget = ({ picturePath }) => {
           p="1rem"
         >
           <Dropzone
-            acceptedFiles=".jpg,.jpeg,.png"
+            acceptedFiles={isImage ? ".jpg,.jpeg,.png" : ".mp4"}
             multiple={false}
-            onDrop={(acceptedFiles) => setImage(acceptedFiles[0])}
+            onDrop={(acceptedFiles) => {
+              const file = acceptedFiles[0];
+              // Check if file size is less than or equal to 10MB
+              if (file.size <= 10 * 1024 * 1024) {
+                setFile(file);
+              } else {
+                toast.error("File size exceeds 10MB limit.");
+              }
+            }}
           >
+
             {({ getRootProps, getInputProps }) => (
-              <FlexBetween>
+              <FlexBetween {...getRootProps()}>
                 <Box
-                  {...getRootProps()}
                   border={`2px dashed ${palette.primary.main}`}
                   p="1rem"
                   width="100%"
                   sx={{ "&:hover": { cursor: "pointer" } }}
                 >
                   <input {...getInputProps()} />
-                  {!image ? (
-                    <p>Add Image Here</p>
+                  {!file ? (
+                    <Typography>{isImage ? "Add Image Here" : "Add Video Here"}</Typography>
                   ) : (
                     <FlexBetween>
-                      <Typography>{image.name}</Typography>
+                      <Typography>{file.name}</Typography>
                       <EditOutlined />
                     </FlexBetween>
                   )}
                 </Box>
-                {image && (
+                {file && (
                   <IconButton
-                    onClick={() => setImage(null)}
+                    onClick={() => setFile(null)}
                     sx={{ width: "15%" }}
                   >
                     <DeleteOutlined />
@@ -132,7 +147,7 @@ const MyPostWidget = ({ picturePath }) => {
       <Divider sx={{ margin: "1.25rem 0" }} />
 
       <FlexBetween>
-        <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
+        <FlexBetween gap="0.25rem" onClick={() => { setIsImage(true); setIsClick(true) }}>
           <ImageOutlined sx={{ color: mediumMain }} />
           <Typography
             color={mediumMain}
@@ -142,13 +157,14 @@ const MyPostWidget = ({ picturePath }) => {
           </Typography>
         </FlexBetween>
 
+        <FlexBetween gap="0.25rem" onClick={() => { setIsImage(false); setIsClick(true) }}>
+          <VideocamOutlined sx={{ color: mediumMain, cursor: "pointer" }} />
+          <Typography color={mediumMain} sx={{ "&:hover": { cursor: "pointer", color: medium } }}>Video</Typography>
+        </FlexBetween>
+
+        {/* Remaining code for Gif, AttachFile, Mic, and MoreHoriz... */}
         {isNonMobileScreens ? (
           <>
-            <FlexBetween gap="0.25rem">
-              <GifBoxOutlined sx={{ color: mediumMain, cursor: "pointer" }} />
-              <Typography color={mediumMain}>Clip</Typography>
-            </FlexBetween>
-
             <FlexBetween gap="0.25rem">
               <AttachFileOutlined sx={{ color: mediumMain, cursor: "pointer" }} />
               <Typography color={mediumMain}>Attachment</Typography>
@@ -165,10 +181,10 @@ const MyPostWidget = ({ picturePath }) => {
           </FlexBetween>
         )}
 
+
         <Button
-          // disabled={!post} // Removed this line
           onClick={() => {
-            if (post.trim() === "") {
+            if (post.trim() === "" && !file) {
               toast.error("Please add something to post."); // Display error toast if input is empty
             } else {
               handlePost(); // Call handlePost only if there's content in the input
@@ -183,7 +199,6 @@ const MyPostWidget = ({ picturePath }) => {
         >
           POST
         </Button>
-
       </FlexBetween>
     </WidgetWrapper>
   );

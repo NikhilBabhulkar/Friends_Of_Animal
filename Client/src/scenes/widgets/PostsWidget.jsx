@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "state";
 import PostWidget from "./PostWidget";
+import VideoWidget from "./VideoWidget"; // Import the VideoWidget component
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,6 +22,7 @@ const PostsWidget = ({ userId, isProfile }) => {
       }
       const data = await response.json();
       dispatch(setPosts({ posts: data }));
+      console.log(posts);
     } catch (error) {
       console.error('Error fetching posts:', error);
       toast.error('Failed to fetch posts. Please try again later.');
@@ -41,14 +43,13 @@ const PostsWidget = ({ userId, isProfile }) => {
       }
       const data = await response.json();
       dispatch(setPosts({ posts: data }));
+      console.log(posts);
     } catch (error) {
       console.error('Error fetching user posts:', error);
       toast.error('Failed to fetch user posts. Please try again later.');
     }
   };
   
-
-
   useEffect(() => {
     if (isProfile) {
       getUserPosts();
@@ -71,20 +72,42 @@ const PostsWidget = ({ userId, isProfile }) => {
           userPicturePath,
           likes,
           comments,
-        }) => (
-          <PostWidget
-            key={_id}
-            postId={_id}
-            postUserId={userId}
-            name={`${firstName} ${lastName}`}
-            description={description}
-            location={location}
-            picturePath={picturePath}
-            userPicturePath={userPicturePath}
-            likes={likes}
-            comments={comments}
-          />
-        )
+           // Add videoPath to the destructured props
+        }) => {
+          // Render either PostWidget or VideoWidget based on the type of the media
+          // if (picturePath && picturePath.endsWith('.mp4')) {
+            if(picturePath && picturePath.endsWith('.mp4')){
+            return (
+              <VideoWidget
+                key={_id}
+                postId={_id}
+                postUserId={userId}
+                name={`${firstName} ${lastName}`}
+                description={description}
+                location={location}
+                videoPath={picturePath} // Pass picturePath as videoPath for VideoWidget
+                userPicturePath={userPicturePath}
+                likes={likes}
+                comments={comments}
+              />
+            );
+          } else {
+            return (
+              <PostWidget
+                key={_id}
+                postId={_id}
+                postUserId={userId}
+                name={`${firstName} ${lastName}`}
+                description={description}
+                location={location}
+                picturePath={picturePath}
+                userPicturePath={userPicturePath}
+                likes={likes}
+                comments={comments}
+              />
+            );
+          }
+        }
       )}
     </>
   );

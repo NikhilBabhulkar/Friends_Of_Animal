@@ -44,6 +44,7 @@ app.use(session({
 }));
 
 /* FILE STORAGE */
+// profile pic storage
 const profilePicsStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/assets/profilepics/');
@@ -54,6 +55,7 @@ const profilePicsStorage = multer.diskStorage({
 });
 const uploadProfilePics = multer({ storage: profilePicsStorage });
 
+// Post Storage 
 const postsStorage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, 'public/assets/posts/');
@@ -63,7 +65,22 @@ const postsStorage = multer.diskStorage({
   },
 });
 
-const uploadPosts = multer({ storage: postsStorage });
+// Update accepted file types to accept both images and videos
+const uploadPosts = multer({
+  storage: postsStorage,
+  fileFilter: function (req, file, cb) {
+    if (
+      file.mimetype === 'image/jpeg' ||
+      file.mimetype === 'image/png' ||
+      file.mimetype === 'image/jpg' ||
+      file.mimetype === 'video/mp4'
+    ) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only JPEG, PNG images, and MP4 videos are allowed.'));
+    }
+  },
+});
 
 
 const eventPosterStorage = multer.diskStorage({
