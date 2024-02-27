@@ -46,6 +46,8 @@ const PostsWidget = ({ userId, isProfile }) => {
       toast.error('Failed to fetch user posts. Please try again later.');
     }
   };
+  
+
 
   useEffect(() => {
     if (isProfile) {

@@ -33,7 +33,7 @@ export const getFeedPosts = async (req, res) => {
     const posts = await Post.find().sort({ createdAt: -1 });
 
     // Send the sorted posts in the response
-    console.log(posts);
+   // console.log(posts);
     res.status(200).json(posts);
   } catch (err) {
     res.status(404).json({ message: err.message });

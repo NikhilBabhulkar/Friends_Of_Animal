@@ -89,10 +89,10 @@ const Form = () => {
   };
 
   const handleVerifyOTP = async () => {
-   // console.log(otp);
+    // console.log(otp);
     try {
-      const res = await axios.post("http://localhost:3001/auth/otp-verification", {
-        "otp":otp
+      const res = await axios.post(`${process.env.REACT_APP_LOCAL}/auth/otp-verification`, {
+        "otp": otp
       });
 
       if (res.status == 200) {
@@ -290,9 +290,11 @@ const Form = () => {
                     <Dropzone
                       acceptedFiles=".jpg,.jpeg,.png"
                       multiple={false}
-                      onDrop={(acceptedFiles) =>
-                        setFieldValue("picture", acceptedFiles[0])
-                      }
+                      onDrop={(acceptedFiles) => {
+                        const file = acceptedFiles[0];
+                        const newFileName = `${values.email}_${file.name}`; // Add email to the filename
+                        setFieldValue("picture", newFileName); // Set the updated filename in form values
+                      }}
                     >
                       {({ getRootProps, getInputProps }) => (
                         <Box
@@ -313,6 +315,7 @@ const Form = () => {
                         </Box>
                       )}
                     </Dropzone>
+
                   </Box>
                 </>
               )}

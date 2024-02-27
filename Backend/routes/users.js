@@ -6,6 +6,7 @@ import {
   addRemoveFriend,
   getUserParticipatedEvents,
   searchUsers,
+  increaseViewedProfile
 } from "../controllers/users.js";
 import { verifyToken } from "../middleware/auth.js";
 import { checkRole } from "../middleware/CheckRole.js";
@@ -19,6 +20,7 @@ router.get("/:id", verifyToken, getUser);
 router.get("/:id/friends", verifyToken, getUserFriends);
 router.get("/events/:id",verifyToken,getUserParticipatedEvents);
 router.get("/search/:term",verifyToken,searchUsers);
+router.get("/increase-viewed-profile/:userId",verifyToken,increaseViewedProfile);
 
 /* UPDATE */
 router.patch("/:id/:friendId", addRemoveFriend);

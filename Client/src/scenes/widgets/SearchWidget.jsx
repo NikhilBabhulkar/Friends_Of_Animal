@@ -1,12 +1,20 @@
 import  React from "react";
 import { Box, Typography, Paper } from "@mui/material";
 import UserImage from "components/UserImage";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const SearchResult = ({ result }) => {
     const navigate = useNavigate();
+    const token = useSelector((state) => state.token);
     return (
-        <Paper variant="outlined" sx={{ p: 1, mb: 1, display: 'flex', alignItems: 'center' }} onClick={()=>{navigate(`/userprofile/${result._id}`)}}>
+        <Paper variant="outlined" sx={{ p: 1, mb: 1, display: 'flex', alignItems: 'center' }} onClick={async()=>{
+            const res =await axios.get(`${process.env.REACT_APP_LOCAL}/users/increase-viewed-profile/${result._id}`,{
+                headers: { Authorization: `Bearer ${token}` }
+            })
+            console.log(res.data);
+            navigate(`/userprofile/${result._id}`);}}>
             {/* Avatar for the circular logo */}
             {/* <Avatar src={result.picturePath} alt="Profile Pic" sx={{ mr: 2 }} /> */}
             <UserImage image={result.picturePath} alt="Profile Pic" sx={{ mr: 2 }} />

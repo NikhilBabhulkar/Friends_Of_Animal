@@ -34,8 +34,8 @@ export const register = async (req, res) => {
       location,
       occupation,
       role,
-      viewedProfile: Math.floor(Math.random() * 10000),
-      impressions: Math.floor(Math.random() * 10000),
+      viewedProfile: 0,
+      impressions: 0,
     });
     const savedUser = await newUser.save();
     res.status(201).json(savedUser);
@@ -68,6 +68,7 @@ export const sendOTP = (req, res) => {
   const { email, name } = req.body;
   const otp = generateOTP();
   otpStorage.set("otp",otp)
+  //console.log(otpStorage.get("otp"));
  // console.log(req.session);
   sendVerificationEmail(name, email, otp);
   res.status(200).json({message:`otp send successfull`});
@@ -77,13 +78,14 @@ export const sendOTP = (req, res) => {
 export const verifyOtp = (req,res) => {
   const otptoCheck = req.body.otp;
   const otpwehave = otpStorage.get("otp");
+ // console.log(otpwehave);
   //console.log(req.session);
-  if (otptoCheck === otpwehave) {
+  if (otptoCheck == otpwehave) {
     otpStorage.delete("otp");
     res.status(200).json({ message: "User Verified" });
   }
   else {
-    console.log();
+    
     res.status(400).json({ message: "Invalid Otp" });
   }
 }

@@ -155,7 +155,7 @@ const MyPostWidget = ({ picturePath }) => {
             </FlexBetween>
 
             <FlexBetween gap="0.25rem">
-              <MicOutlined sx={{ color: mediumMain, cursor: "pointer"  }} />
+              <MicOutlined sx={{ color: mediumMain, cursor: "pointer" }} />
               <Typography color={mediumMain}>Audio</Typography>
             </FlexBetween>
           </>
@@ -166,8 +166,14 @@ const MyPostWidget = ({ picturePath }) => {
         )}
 
         <Button
-          // disabled={!post}
-          onClick={handlePost}
+          // disabled={!post} // Removed this line
+          onClick={() => {
+            if (post.trim() === "") {
+              toast.error("Please add something to post."); // Display error toast if input is empty
+            } else {
+              handlePost(); // Call handlePost only if there's content in the input
+            }
+          }}
           style={{
             color: "white",
             backgroundColor: "#006eff",
@@ -177,6 +183,7 @@ const MyPostWidget = ({ picturePath }) => {
         >
           POST
         </Button>
+
       </FlexBetween>
     </WidgetWrapper>
   );

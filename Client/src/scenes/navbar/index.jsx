@@ -53,8 +53,9 @@ const Navbar = () => {
     const value = event.target.value;
     setSearchTerm(value);
     try {
+      console.log(process.env.REACT_APP_LOCAL);
       const res = await axios.get(
-        `http://localhost:3001/users/search/${searchTerm}`,
+        `${process.env.REACT_APP_LOCAL}/users/search/${searchTerm}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setSuggestion(res.data);
