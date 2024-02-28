@@ -46,7 +46,7 @@ import Icon from "@mui/material/Icon";
 import AboutUs from "layouts/pages/landing-pages/about-us";
 import ContactUs from "layouts/pages/landing-pages/contact-us";
 import Author from "layouts/pages/landing-pages/author";
-import SignIn from "layouts/pages/authentication/sign-in";
+// import SignIn from "layouts/pages/authentication/sign-in";
 
 // Sections
 // import PageHeaders from "layouts/sections/page-sections/page-headers";
@@ -70,41 +70,46 @@ import SignIn from "layouts/pages/authentication/sign-in";
 
 const routes = [
   {
-    name: "pages",
+    name: "About Us",
     icon: <Icon>dashboard</Icon>,
     columns: 1,
     rowsPerColumn: 2,
     collapse: [
       {
-        name: "landing pages",
+        name: "About Organization",
         collapse: [
           {
-            name: "about us",
+            name: "About FOA",
             route: "/pages/landing-pages/about-us",
             component: <AboutUs />,
           },
           {
-            name: "contact us",
+            name: "What we do?",
             route: "/pages/landing-pages/contact-us",
             component: <ContactUs />,
           },
           {
-            name: "author",
+            name: "Our Team",
+            route: "/pages/landing-pages/author",
+            component: <Author />,
+          },
+          {
+            name: "FAQ",
             route: "/pages/landing-pages/author",
             component: <Author />,
           },
         ],
       },
-      {
-        name: "account",
-        collapse: [
-          {
-            name: "sign in",
-            route: "https://6517da3fac5f2a7eaeeb45c3--gleaming-biscochitos-300bf7.netlify.app/",
-            component: <SignIn />,
-          },
-        ],
-      },
+      // {
+      //   name: "account",
+      //   collapse: [
+      //     {
+      //       name: "sign in",
+      //       route: "https://6517da3fac5f2a7eaeeb45c3--gleaming-biscochitos-300bf7.netlify.app/",
+      //       component: <SignIn />,
+      //     },
+      //   ],
+      // },
     ],
   },
 
@@ -239,20 +244,109 @@ const routes = [
   //     },
   //   ],
   // },
+  // {
+  //   name: "Events",
+  //   route: "/pages/landing-pages/about-us",
+  //   component: <AboutUs />,
+  // },
+  // {
+  //   name: "contact us",
+  //   route: "/pages/landing-pages/contact-us",
+  //   component: <ContactUs />,
+  // },
+  // {
+  //   name: "Blogs",
+  //   route: "/pages/landing-pages/author",
+  //   component: <Author />,
+  // },
   {
-    name: "about us",
-    route: "/pages/landing-pages/about-us",
-    component: <AboutUs />,
+    name: "Events",
+    // icon: <Icon>dashboard</Icon>,
+    columns: 1,
+    rowsPerColumn: 2,
+    collapse: [
+      {
+        name: "Our Events",
+        collapse: [
+          {
+            name: "Ongoing",
+            route: "/pages/landing-pages/about-us",
+            component: <AboutUs />,
+          },
+          {
+            name: "Past Events",
+            route: "/pages/landing-pages/contact-us",
+            component: <ContactUs />,
+          },
+        ],
+      },
+    ],
   },
   {
-    name: "contact us",
-    route: "/pages/landing-pages/contact-us",
-    component: <ContactUs />,
+    name: "Contact Us",
+    // icon: <Icon>dashboard</Icon>,
+    columns: 1,
+    rowsPerColumn: 2,
+    collapse: [
+      {
+        name: "You can join",
+        collapse: [
+          {
+            name: "As Volunteer",
+            // route:"https://6517da3fac5f2a7eaeeb45c3--gleaming-biscochitos-300bf7.netlify.app/",
+            component: <AboutUs />,
+          },
+          {
+            name: "As Evaluater",
+            // route:"https://6517da3fac5f2a7eaeeb45c3--gleaming-biscochitos-300bf7.netlify.app/",
+            component: <ContactUs />,
+          },
+          {
+            name: "As Event Participant",
+            // route:`https://6517da3fac5f2a7eaeeb45c3--gleaming-biscochitos-300bf7.netlify.app/`,
+            component: <ContactUs />,
+          },
+          {
+            name: "As School/ College/ Institute",
+            // route:"https://6517da3fac5f2a7eaeeb45c3--gleaming-biscochitos-300bf7.netlify.app/",
+            component: <ContactUs />,
+          },
+        ],
+      },
+    ],
   },
   {
-    name: "Blogs",
-    route: "/pages/landing-pages/author",
-    component: <Author />,
+    name: "Insights",
+    // icon: <Icon>dashboard</Icon>,
+    columns: 1,
+    rowsPerColumn: 2,
+    collapse: [
+      {
+        name: "some highlights",
+        collapse: [
+          {
+            name: "News",
+            route: "/pages/landing-pages/about-us",
+            component: <AboutUs />,
+          },
+          {
+            name: "Gallery",
+            route: "/pages/landing-pages/contact-us",
+            component: <ContactUs />,
+          },
+          {
+            name: "Downloads",
+            route: "/pages/landing-pages/about-us",
+            component: <AboutUs />,
+          },
+          {
+            name: "Blogs",
+            route: "/pages/landing-pages/author",
+            component: <Author />,
+          },
+        ],
+      },
+    ],
   },
 ];
 

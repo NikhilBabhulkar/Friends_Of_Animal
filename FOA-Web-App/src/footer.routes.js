@@ -15,7 +15,7 @@ const date = new Date().getFullYear();
 export default {
   brand: {
     name: "Friends Of Animal",
-    image: "https://friendsofanimals.org.in/Images/logo.png",
+    image: "http://103.127.35.45:3001/assets/foalogo.png",
     route: "/",
   },
   socials: [
@@ -38,12 +38,12 @@ export default {
   ],
   menus: [
     {
-      name: "Organization",
+      // name: "Organization",
       items: [
-        { name: "Ways to donate", href: "" },
-        { name: "Get involved", href: "" },
-        { name: "About us", href: "" },
-        { name: "For sponsors", href: "" },
+        // { name: "Ways to donate", href: "" },
+        // { name: "Get involved", href: "" },
+        // { name: "About us", href: "" },
+        // { name: "For sponsors", href: "" },
       ],
     },
 
@@ -65,11 +65,11 @@ export default {
       ],
     },
     {
-      name: "legal",
+      // name: "legal",
       items: [
-        { name: "terms & conditions", href: "" },
-        { name: "privacy policy", href: "" },
-        { name: "licenses (EULA)", href: "" },
+        // { name: "terms & conditions", href: "" },
+        // { name: "privacy policy", href: "" },
+        // { name: "licenses (EULA)", href: "" },
       ],
     },
   ],

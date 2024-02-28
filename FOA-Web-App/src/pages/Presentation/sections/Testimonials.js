@@ -24,7 +24,7 @@ import MKBox from "components/MKBox";
 import MKTypography from "components/MKTypography";
 
 // Material Kit 2 React examples
-import DefaultReviewCard from "examples/Cards/ReviewCards/DefaultReviewCard";
+// import DefaultReviewCard from "examples/Cards/ReviewCards/DefaultReviewCard";
 
 // Images
 import appleLogo from "assets/images/gray-dog.avif";
@@ -56,7 +56,7 @@ function Information() {
           </MKTypography>
         </Grid>
         <Grid container spacing={3} sx={{ mt: 8 }}>
-          <Grid item xs={12} md={6} lg={4}>
+          {/* <Grid item xs={12} md={6} lg={4}>
             <DefaultReviewCard
               name="Haythahie  Balakrishnan"
               date="1 day ago"
@@ -67,8 +67,8 @@ function Information() {
                 borderRadius: "5px", // Optional: Add border radius for rounded corners
               }}
             />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
+          </Grid> */}
+          {/* <Grid item xs={12} md={6} lg={4}>
             <DefaultReviewCard
               sx={{
                 backgroundColor: "red", // Change this to your desired hover color
@@ -80,15 +80,15 @@ function Information() {
               review="Changing thousands of lives is a great thing and a tough thing as well. I am here to let the visitors know that this 100% serving animal serving organization. Compassion for animals is intimately associated with goodness of character, and it may be confidently asserted that he who is cruel to animals cannot be a good man."
               rating={5}
             />
-          </Grid>
-          <Grid item xs={12} md={6} lg={4}>
+          </Grid> */}
+          {/* <Grid item xs={12} md={6} lg={4}>
             <DefaultReviewCard
               name="Dusty Fate"
               date="3 weeks ago"
               review="For over 20 years, I’ve been a supporter of BFAS. Their mission is similar to other animal rescues, but their strategies & tactics to achieve those goals align perfectly with grassroots efforts. Plz support BFAS, they are the real deal."
               rating={5}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
         <Divider sx={{ my: 6 }} />
         <Grid container spacing={3} justifyContent="center">
